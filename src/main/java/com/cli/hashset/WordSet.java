@@ -10,6 +10,11 @@ public class WordSet {
         this.wordList = new ArrayList<>();
     }
 
+    public Word getWord(int idx) {
+        return this.wordList.get(idx);
+    }
+
+
     public void addWord(Word word) {
         for (Word value : this.wordList) {
             if (word.getName().equals(value.getName())) {
@@ -21,59 +26,55 @@ public class WordSet {
         this.wordList.add(word);
     }
 
-    public boolean containsByName(String wordName) {
-        for (Word word: this.wordList) {
-            if (word.getName().equals(wordName)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public void increment(String wordName) {
-        for (Word word: this.wordList) {
-            if (word.getName().equals(wordName)) {
-                word.increment();
-                return;
-            }
-        }
-    }
-
     @Override
     public String toString() {
-        this.sort();
+        this.mergeSort(0, this.wordList.size() - 1);
         StringBuilder temp = new StringBuilder("word freq:\n");
-        for (Word word: this.wordList) {
-            temp.append(word).append("\n");
+        for (int i = 0; i < Math.min(this.wordList.size(), 25); i++) {
+            temp.append(this.wordList.get(i)).append("\n");
+        }
+
+        if (this.wordList.size() > 25) {
+            temp.append("...").append("\n");
         }
 
         return temp.toString();
     }
 
-    public void sort() {
-        for (int i = 0; i < this.wordList.size() - 1; i++) {
-            int maxIdx = i;
-            for (int j = i + 1; j < this.wordList.size(); j++) {
-                if (this.wordList.get(j).getCount()
-                        > this.wordList.get(maxIdx).getCount()) {
-                    maxIdx = j;
-                }
-            }
-
-            if (maxIdx != i) {
-                this.swap(i, maxIdx);
-            }
+    public void mergeSort(int start, int end) {
+        if (end > start) {
+            int mid = (start + end) / 2;
+            this.mergeSort(start, mid);
+            this.mergeSort(mid + 1, end);
+            this.merge(start, mid, end);
         }
     }
 
-    private void swap(int i, int j) {
-        if (i < 0 || i >= this.wordList.size() || j < 0 || j >= this.wordList.size()) {
-            throw new IndexOutOfBoundsException("Index out of bounds for swap operation");
+    public void merge(int start, int mid, int end) {
+        WordSet temp = new WordSet();
+        int i = start, j = mid + 1;
+        while (i <= mid && j <= end) {
+            if (this.getWord(i).getCount() >= this.getWord(j).getCount()) {
+                temp.addWord(this.getWord(i));
+                i++;
+            } else {
+                temp.addWord(this.getWord(j));
+                j++;
+            }
         }
 
-        Word temp = this.wordList.get(i);
-        this.wordList.set(i, this.wordList.get(j));
-        this.wordList.set(j, temp);
+        while (i <= mid) {
+            temp.addWord(this.getWord(i));
+            i++;
+        }
+
+        while (j <= end) {
+            temp.addWord(this.getWord(j));
+            j++;
+        }
+
+        for (int k = 0; k < temp.wordList.size(); k++) {
+            this.wordList.set(k + start, temp.getWord(k));
+        }
     }
 }

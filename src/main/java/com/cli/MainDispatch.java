@@ -11,7 +11,7 @@ import java.lang.reflect.Field;
 
 @Command(name = "jwc",
         mixinStandardHelpOptions = true, version = "jwc 1.0.0",
-        description = "mimics wc functionality of Unix on Windows"
+        description = "wc functionality of Unix on Windows"
 )
 public class MainDispatch implements Runnable {
 
