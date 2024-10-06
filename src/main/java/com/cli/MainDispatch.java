@@ -31,10 +31,8 @@ public class MainDispatch implements Runnable {
         }
 
         Field[] fields = this.getClass().getDeclaredFields();
-
         for (Field field : fields) {
             field.setAccessible(true);
-
             try {
                 if (field.getType() == boolean.class && (boolean) field.get(this)) {
                     fileUtils.getVal(field.getName());
@@ -60,8 +58,14 @@ public class MainDispatch implements Runnable {
     @Option(names = {"-L", "--max-line-length"}, description = "longest line in file")
     private boolean maxLineMode;
 
-    @Option(names = {"-wf", "--word-frequency"}, description = "count per word in file")
+    @Option(names = {"-wf", "--word-frequency"}, description = "top words wrt count")
     private boolean wordFreqMode;
+
+    @Option(names = {"-awL", "--average-word-length"}, description = "average word length")
+    private boolean avgWordLenMode;
+
+    @Option(names = {"-f", "--full"}, description = "displays complete analysis")
+    private boolean fullAnalysisMode;
 
     @Parameters(index = "0", paramLabel = "<filepath>", description = "path to the file")
     private String filepath;

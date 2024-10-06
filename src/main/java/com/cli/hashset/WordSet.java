@@ -14,6 +14,9 @@ public class WordSet {
         return this.wordList.get(idx);
     }
 
+    public ArrayList<Word> getWordList() {
+        return this.wordList;
+    }
 
     public void addWord(Word word) {
         for (Word value : this.wordList) {
@@ -29,13 +32,17 @@ public class WordSet {
     @Override
     public String toString() {
         this.mergeSort(0, this.wordList.size() - 1);
-        StringBuilder temp = new StringBuilder("word freq:\n");
-        for (int i = 0; i < Math.min(this.wordList.size(), 25); i++) {
-            temp.append(this.wordList.get(i)).append("\n");
+        StringBuilder temp = new StringBuilder("Top 10 words : [");
+        for (int i = 0; i < Math.min(this.wordList.size(), 10); i++) {
+            if (i < Math.min(this.wordList.size(), 10) - 1) {
+                temp.append(this.wordList.get(i)).append(", ");
+            } else {
+                temp.append(this.wordList.get(i));
+            }
         }
 
-        if (this.wordList.size() > 25) {
-            temp.append("...").append("\n");
+        if (this.wordList.size() > 10) {
+            temp.append("]");
         }
 
         return temp.toString();
